@@ -130,7 +130,7 @@ namespace lab1
         }
 
 
-        public void lab2() //Меню
+        public bool lab2() //Меню
         {
             printLabName(2);
 
@@ -141,17 +141,20 @@ namespace lab1
                 "Задание",
                 "Выполнение лабораторной работы 4",
                 "Игра",
+                "Работа со строками",
                 "Выход"
             };
 
             Console.WriteLine("Меню программы");
-            for (int i = 0; i < menuTitles.Length; ++i)
+            for (int i = 0; i < menuTitles.Length-1; ++i)
             {
                 Console.WriteLine("{0} - {1}", i + 1, menuTitles[i]);
             }
-            Console.WriteLine("Выберите пункт меню (от 0 до {0})", menuTitles.Length);
+            Console.WriteLine("{0} - {1}", 0, menuTitles.Last());
+            Console.WriteLine("Выберите пункт меню (от 0 до {0})", menuTitles.Length-1);
 
-            int menuNumber = ReadInt("пункт меню", 0, menuTitles.Length);
+            int menuNumber = ReadInt("пункт меню", 0, menuTitles.Length-1);
+            bool needContinue = true;
             try
             {
                 switch (menuNumber)
@@ -173,8 +176,12 @@ namespace lab1
                     case 5:
                         lab5();
                         break;
-                    /*case 0:
-                        if (!needContinue())break;*/
+                    case 6:
+                        lab6();
+                        break;
+                    case 0:
+                        needContinue = NeedContinue();
+                        break;
                         
                         
                 }
@@ -183,12 +190,10 @@ namespace lab1
             {
                 Console.WriteLine("Случилась ошибка: {0}", e.Message);
             }
-
-            Console.WriteLine("До встречи!");
-            Console.ReadKey();
+            return needContinue;
         }
 
-        private bool needContinue()
+        private bool NeedContinue()
         {
             Console.WriteLine("Хотите выйти из программы?");
             Console.WriteLine("Нажмите 'д', Если уверены, что хотите выйти, или 'н', если хотите продолжить");
@@ -211,11 +216,12 @@ namespace lab1
         public void lab3() //Меню в цикле
         {
             printLabName(3);
-            do
-            {
-                lab2();
-            } while (needContinue());
+            while (lab2());
+
+            Console.WriteLine("До встречи!");
+            Console.ReadKey();
         }
+
 
         static int[] createRandomArray(int size)
         {
@@ -258,7 +264,8 @@ namespace lab1
                     sorted[j - 1] = tmp;
                 }
             }
-            return sorted;
+            return sorted; 
+
 
         }
         int[] gnomeSort(int[] array)
@@ -433,6 +440,39 @@ namespace lab1
                 }
                
             Console.WriteLine("Количество черных фишек {0}, белых - {1}", blackCount, whiteCount);
+        }
+
+        public void lab6()
+        {
+            Console.WriteLine("Желаете увидеть тестовую строку?\t", "Введи 'д' - если хотите и 'н'- если нет");
+
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (input.Length == 1)
+                {
+                    char exit = input[0];
+                    if (exit == 'д')
+                    {
+                        int stringA = 13;
+                        Console.WriteLine("Варкалось.Хливкие шорьки \nПырялись по наве, \nИ хрюкотали зелюки, \nКак мюмзики в мове, \nО бойся Бармаглота, сын! \nОн так свиреп и дик, \nА в глуще рымит исполин - \nЗлопастный Брандашмыг.\t", "В данной строке {0} \t", stringA);
+                        break;
+                    }
+                    if (exit == 'н')
+                        break;
+                }
+                printInputError("необходимо ввести 'д' или 'н'");
+            }
+
+            Console.WriteLine("Введите проверяемую строку");
+            string poems = Console.ReadLine();
+            int countA = 0;
+            for (int i = 0; i < poems.Length; i++)
+            {
+                if (poems[i] == 'а' || poems[i] == 'А')
+                    countA++;
+            }
+            Console.WriteLine(countA);
         }
     }
 }
